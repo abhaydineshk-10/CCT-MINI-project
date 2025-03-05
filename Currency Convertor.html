@@ -6,7 +6,7 @@
     <title>Currency Converter</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
+        
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #ff7eb3, #ff758c, #8e44ad, #3498db);
@@ -21,15 +21,14 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            transition: background 0.5s ease;
         }
-
+        
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
+        
         .container {
             background: rgba(255, 255, 255, 0.9);
             padding: 30px;
@@ -41,17 +40,17 @@
             position: relative;
             animation: fadeIn 1.5s ease-in-out;
         }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
-
+        
         h2 {
             color: #222;
             font-weight: 600;
         }
-
+        
         select, input, button {
             width: 90%;
             margin: 10px 0;
@@ -62,16 +61,16 @@
             outline: none;
             transition: 0.3s;
         }
-
+        
         select, input {
             background: #f0f4f8;
             box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
         }
-
+        
         input:focus {
             box-shadow: 0 0 10px rgba(0, 140, 255, 0.5);
         }
-
+        
         button {
             background: linear-gradient(135deg, #ff8c00, #ff5e62);
             color: white;
@@ -80,13 +79,13 @@
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease-in-out, box-shadow 0.3s;
         }
-
+        
         button:hover {
             background: linear-gradient(135deg, #ff5e00, #ff3e4d);
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(255, 94, 98, 0.8);
         }
-
+        
         #result {
             font-size: 22px;
             font-weight: bold;
@@ -96,124 +95,92 @@
             transform: translateY(20px);
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
-
-        #history {
-            margin-top: 20px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .dark-mode {
-            background: linear-gradient(135deg, #2c3e50, #34495e, #1a1a1a);
-            color: white;
-        }
-
-        .dark-mode .container {
-            background: rgba(50, 50, 50, 0.9);
-            color: white;
-        }
-
-        .dark-mode button {
-            background: linear-gradient(135deg, #4a90e2, #007aff);
-        }
-
-        .dark-mode select, .dark-mode input {
-            background: #444;
-            color: white;
-        }
-
-        .toggle-dark-mode {
+        
+        .glowing-orbs {
             position: absolute;
-            top: 10px;
-            right: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
         }
-
+        
+        .orb {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out alternate;
+            filter: blur(10px);
+        }
+        
+        .orb:nth-child(1) {
+            top: 10%; left: 15%; animation-duration: 8s;
+        }
+        .orb:nth-child(2) {
+            top: 40%; right: 10%; animation-duration: 6s;
+        }
+        .orb:nth-child(3) {
+            bottom: 15%; left: 30%; animation-duration: 7s;
+        }
+        
+        @keyframes float {
+            from { transform: translateY(-20px); }
+            to { transform: translateY(20px); }
+        }
     </style>
 </head>
 <body>
-    <button class="toggle-dark-mode" onclick="toggleDarkMode()">🌙</button>
     <div class="container">
         <h2>Currency Converter</h2>
         <input type="number" id="amount" placeholder="Enter amount" min="0">
-        <select id="fromCurrency"></select>
-        <select id="toCurrency"></select>
+        <select id="fromCurrency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="INR">INR</option>
+        </select>
+        <select id="toCurrency">
+            <option value="INR">INR</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+        </select>
         <button onclick="convertCurrency()">Convert</button>
         <p id="result"></p>
-        <div id="history"></div>
+        <div class="glowing-orbs">
+            <div class="orb"></div>
+            <div class="orb"></div>
+            <div class="orb"></div>
+        </div>
     </div>
 
     <script>
-        const apiKey = "YOUR_API_KEY_HERE"; // Replace with your API key
-        const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/`;
-
-        async function populateCurrencies() {
-            const response = await fetch(apiUrl + "USD");
-            const data = await response.json();
-            const currencies = Object.keys(data.conversion_rates);
-            const fromSelect = document.getElementById("fromCurrency");
-            const toSelect = document.getElementById("toCurrency");
-
-            currencies.forEach(currency => {
-                const option1 = document.createElement("option");
-                const option2 = document.createElement("option");
-                option1.value = option2.value = currency;
-                option1.text = option2.text = currency;
-                fromSelect.appendChild(option1);
-                toSelect.appendChild(option2);
-            });
-
-            fromSelect.value = "USD";
-            toSelect.value = "INR";
-        }
-
-        async function convertCurrency() {
-            const amount = parseFloat(document.getElementById("amount").value);
-            const fromCurrency = document.getElementById("fromCurrency").value;
-            const toCurrency = document.getElementById("toCurrency").value;
-            const resultElement = document.getElementById("result");
+        function convertCurrency() {
+            let amount = parseFloat(document.getElementById("amount").value);
+            let fromCurrency = document.getElementById("fromCurrency").value;
+            let toCurrency = document.getElementById("toCurrency").value;
+            let resultElement = document.getElementById("result");
 
             if (isNaN(amount) || amount <= 0) {
                 resultElement.innerHTML = "Please enter a valid amount.";
-                return;
+            } else {
+                let conversionRates = { "USD_INR": 82.71, "EUR_USD": 1.07, "GBP_INR": 101.58, "USD_EUR": 0.94 };
+                let conversionKey = `${fromCurrency}_${toCurrency}`;
+                let conversionRate = conversionRates[conversionKey];
+                
+                if (conversionRate) {
+                    let convertedAmount = (amount * conversionRate).toFixed(2);
+                    resultElement.innerHTML = `Converted Amount: ${convertedAmount} ${toCurrency}`;
+                    resultElement.style.opacity = "1";
+                    resultElement.style.transform = "translateY(0) scale(1.1)";
+                    setTimeout(() => { resultElement.style.transform = "translateY(0) scale(1)"; }, 300);
+                } else {
+                    resultElement.innerHTML = "Conversion rate not available.";
+                }
             }
-
-            if (fromCurrency === toCurrency) {
-                resultElement.innerHTML = "Please select different currencies.";
-                return;
-            }
-
-            const response = await fetch(apiUrl + fromCurrency);
-            const data = await response.json();
-            const rate = data.conversion_rates[toCurrency];
-            const convertedAmount = (amount * rate).toFixed(2);
-
-            resultElement.innerHTML = `Converted Amount: ${convertedAmount} ${toCurrency}`;
-            resultElement.style.opacity = "1";
-
-            saveHistory(fromCurrency, toCurrency, amount, convertedAmount);
         }
-
-        function saveHistory(from, to, amount, result) {
-            const historyElement = document.getElementById("history");
-            historyElement.innerHTML += `<p>${amount} ${from} = ${result} ${to}</p>`;
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle("dark-mode");
-            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
-        }
-
-        window.onload = () => {
-            populateCurrencies();
-            if (localStorage.getItem("darkMode") === "true") {
-                document.body.classList.add("dark-mode");
-            }
-        };
     </script>
 </body>
 </html>
