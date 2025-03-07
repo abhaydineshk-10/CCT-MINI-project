@@ -20,4 +20,4 @@ A simple and visually appealing **Currency Converter** built with **HTML, CSS, a
 1. **Clone this repository:**
    ```bash
    git clone https://github.com/your-username/currency-converter.git
-By AbhayK, Shamnan
+##By AbhayK, Shamnan
