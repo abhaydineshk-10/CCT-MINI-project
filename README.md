@@ -1,23 +1,50 @@
-# CCT-MINI-project
-# 💰 Currency Converter Web App
+# Currency Converter App
 
-A simple and visually appealing **Currency Converter** built with **HTML, CSS, and JavaScript**. It features an animated, interactive UI with smooth transitions and glowing effects.
+This project is a simple currency converter application that allows users to convert amounts between different currencies. It consists of a frontend built with HTML, CSS, and JavaScript, and a backend developed in Python.
 
-## ✨ Features
+## Project Structure
 
-- 🔄 Convert between **USD, EUR, GBP, and INR**  
-- 🎨 **Dynamic background animation** with glowing orbs  
-- 🚀 **Interactive UI with smooth transitions & hover effects**  
-- ⚡ Instant conversion with predefined exchange rates  
+```
+currency-converter-app
+├── frontend
+│   ├── index.html       # Main HTML document for the application
+│   ├── style.css        # Styles for the frontend application
+│   └── app.js           # JavaScript code for handling user interactions
+├── backend
+│   ├── app.py           # Python application for the backend
+│   └── requirements.txt  # Python dependencies for the backend
+└── README.md            # Documentation for the project
+```
 
-## 📌 Technologies Used
+## Setup Instructions
 
-- **Frontend:** HTML, CSS (with animations), JavaScript  
-- **Backend:** No backend yet (static conversion rates)  
+### Frontend
 
-## 🛠️ How to Run
+1. Navigate to the `frontend` directory.
+2. Open `index.html` in a web browser to view the application.
 
-1. **Clone this repository:**
-   ```bash
-   git clone https://github.com/your-username/currency-converter.git
-##By AbhayK, Shamnan
+### Backend
+
+1. Navigate to the `backend` directory.
+2. Install the required Python packages by running:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Start the backend server by running:
+   ```
+   python app.py
+   ```
+
+## Usage
+
+1. Enter the amount you wish to convert in the input field.
+2. Select the currencies you want to convert from and to.
+3. Click the "Convert" button to see the converted amount.
+
+## Contributing
+
+Feel free to fork the repository and submit pull requests for any improvements or features you would like to add.
+
+## License
+
+This project is open-source and available under the MIT License.
